@@ -2,9 +2,9 @@ name: Example CI pipeline for building, testing and publishing project with mave
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build_and_test:
@@ -36,7 +36,7 @@ jobs:
         with:
           java-version: 14
       - name: Build native executable
-        run: ./mvnw package 
+        run: ./mvnw package
         working-directory: sample-app
       - name: Copy artifact to staging directory
         run: mkdir staging && cp target/*.jar staging  
@@ -84,20 +84,18 @@ jobs:
       - name: Dockerize
         uses: maxday/quarkus-dockerize-action@master
         with:
-#          tag: docker.pkg.github.com/${{ github.repository }}:latest
+          tag: docker.pkg.github.com/${{ github.repository }}:latest
 #          tag: ghcr.io/${{ github.repository }}:latest
-          tag: docker.github.bytesource.info/bmw/mvnexample/testcontainer:${{ github.sha }}
-#          tag: orgs/bmw/mvnexample:latest
           executablePath: sample-app/src/main/docker/Dockerfile.native
       - name: Push image        
         run: 
-#          docker push docker.pkg.github.com/${{ github.repository }}:latest
+          docker push docker.pkg.github.com/${{ github.repository }}:latest
 #           docker push ghcr.io/${{ github.repository }}:latest
 #
 #          docker push docker.pkg.github.com/$GITHUB_REPOSITORY/quarkus-app-openjdk
 #          docker push docker.pkg.github.com/bmw/mvnexample:${{ github.sha }}
 #           docker push docker.github.bytesource.info/bmw/mvnexample/testcontainer:${{ github.sha }}
-          docker push jozef/orgs/bmw/mvnexample:latest
+#           docker push jozef/orgs/bmw/mvnexample:latest
 
           
 #     steps:

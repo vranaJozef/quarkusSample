@@ -1,0 +1,114 @@
+name: Example CI pipeline for building, testing and publishing project with maven, docker and github packages
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+#   build_and_test:
+#     runs-on: self-hosted
+#     name: Build and test project
+#     steps:
+#       - name: Checkout source code
+#         uses: actions/checkout@v2
+#       - name: Set up JDK 14
+#         uses: actions/setup-java@v1
+#         with:
+#           java-version: 14
+#       - name: Build project
+#         run: ./mvnw compile -B
+#         working-directory: sample-app
+#       - name: Test project
+#         run: ./mvnw test -B
+#         working-directory: sample-app
+
+#   artifact:
+#     runs-on: self-hosted
+#     needs: [ build_and_test ]
+#     name: Upload artifact 
+#     steps:
+#       - name: Checkout source code
+#         uses: actions/checkout@v2
+#       - name: Set up JDK 14
+#         uses: actions/setup-java@v1
+#         with:
+#           java-version: 14
+#       - name: Build native executable
+#         run: ./mvnw package 
+#         working-directory: sample-app
+#       - name: Copy artifact to staging directory
+#         run: mkdir staging && cp target/*.jar staging  
+#         working-directory: sample-app
+#       - name: Upload artifact
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: Package
+#           path: sample-app/staging
+
+  build-and-Push-Docker-Image:
+    runs-on: self-hosted
+    #needs: artifact
+    name: Docker Build, Tag, Push
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+#     - name: Download built artifact
+#       uses: actions/download-artifact@master
+#       with:
+#         name: Package
+#         path: sample-app/staging
+    - name: Set up JDK 14
+      uses: actions/setup-java@v1
+      with:
+       java-version: 14
+    - name: Create executable
+      run: ./mvnw package -Dquarkus.native.container-build=true
+      working-directory: sample-app
+    - name: Upload to github registry
+      run: |        
+        IMAGE_NAME="docker.pkg.github.com/mvnexample/my-image:1.0"
+         docker login docker.pkg.github.com --username jozef --password ${{ secrets.GITHUB_TOKEN }}
+         docker build -f src/main/docker/Dockerfile.native -t quarkus-quickstart/getting-started .
+         docker push quarkus-quickstart/getting-started
+      working-directory: sample-app
+        
+#   package:
+#     runs-on: self-hosted
+#     #needs: [ build_and_test ]
+#     name: Package project
+#     steps:
+#       - name: Checkout source code
+#         uses: actions/checkout@v2
+#       - name: Set up JDK 14
+#         uses: actions/setup-java@v1
+#         with:
+#           java-version: 14
+#       - name: Package project        
+#         run: ./mvnw package -Dquarkus.container-image.build=true
+#         working-directory: sample-app
+#       - name: Deploy
+#         run: ./mvnw -Pgithub -DuseGitHubPackages=true deploy
+#         working-directory: sample-app
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+#   docker:
+#     name: Publish to Docker repo
+#     needs: [ build, test ]
+#     runs-on: self-hosted
+
+#    steps:
+#      - uses: actions/checkout@v1
+#      - name: Set up JDK 14
+#        uses: actions/setup-java@v1
+#        with:
+#          java-version: 14
+#      - name: Login to Docker repo
+#        run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
+#      - name: Build Docker image
+#        run: docker build -f src/main/docker/Dockerfile.native -t quarkus/hello-quarkus .
+#      - name: Publish Docker image
+#        run: docker push $DOCKER_REPO

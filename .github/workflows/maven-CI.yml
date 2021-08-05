@@ -84,12 +84,12 @@ jobs:
       - name: Dockerize
         uses: maxday/quarkus-dockerize-action@master
         with:
-          tag: docker.pkg.github.com/vranajozef/quarkussample:latest
+          tag: docker.pkg.github.com/vranajozef/quarkussample/sampleimage:latest
 #          tag: ghcr.io/${{ github.repository }}:latest
           executablePath: sample-app/src/main/docker/Dockerfile.native
       - name: Push image        
         run: 
-          docker push docker.pkg.github.com/vranajozef/quarkussample:latest
+          docker push docker.pkg.github.com/vranajozef/quarkussample/sampleimage:latest
 #           docker push ghcr.io/${{ github.repository }}:latest
 #
 #          docker push docker.pkg.github.com/$GITHUB_REPOSITORY/quarkus-app-openjdk

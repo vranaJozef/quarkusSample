@@ -177,7 +177,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 14
-      - name: Try
+      - name: Release
         run: |
           git config user.name "${{ github.event.head_commit.committer.name }}"
           git config user.email "${{ github.event.head_commit.committer.email }}"

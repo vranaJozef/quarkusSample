@@ -20,8 +20,8 @@
     <project.scm.id>github</project.scm.id>  
   </properties>
   <scm>
-        <connection>scm:git:${project.scm.url}</connection>
-        <developerConnection>scm:git:${project.scm.url}</developerConnection>
+        <connection>scm:git:https//${project.scm.url}</connection>
+        <developerConnection>scm:git:https//${project.scm.url}</developerConnection>
         <url>https://github.com:vranaJozef/quarkussample.git</url>
         <tag>HEAD</tag>
   </scm>

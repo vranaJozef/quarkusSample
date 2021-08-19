@@ -2,8 +2,8 @@
    <servers>  
       <server>
          <id>my-scm-server</id>  
-         <username>vranaJozef</username>  
-         <password>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</password>  
+         <username>{env.GITHUB_ACTOR}</username>  
+         <password>{env.GITHUB_PAT}</password>  
       </server>   
    </servers>
 </settings>

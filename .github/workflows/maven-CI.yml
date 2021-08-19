@@ -1,10 +1,7 @@
 name: Example CI pipeline for building, testing and publishing project with maven, docker and github packages
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
 #   build_and_test:
@@ -181,9 +178,4 @@ jobs:
         with:
           java-version: 14
       - name: Release
-        uses: qcastel/github-actions-maven-release@master
-        with:
-          git-release-bot-name: "bot-idhub"
-          git-release-bot-email: "bot@idhub.io"
-          maven-args: "-Dmaven.javadoc.skip=true -DskipTests -DskipITs -Ddockerfile.skip -DdockerCompose.skip -Dmaven.deploy.skip=true"
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        

@@ -184,12 +184,9 @@ jobs:
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
           mvn -B --file pom.xml release:prepare release:perform -Drepository.url=https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git
-#       - name: Configure Git user
-#         run: |
-#           git config user.email "actions@github.com"
-#           git config user.name "GitHub Actions"
-#       - name: Release
-#         run: ./mvnw -B release:prepare release:perform
         working-directory: sample-app
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_ACTOR: ${{ github.actor }}
+      GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
+      

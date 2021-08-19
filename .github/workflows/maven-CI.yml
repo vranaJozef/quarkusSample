@@ -173,7 +173,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-      steps:
+    steps:
       - name: Checkout source code
         uses: actions/checkout@v2
       - name: Set up JDK 14

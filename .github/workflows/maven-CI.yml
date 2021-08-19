@@ -178,4 +178,7 @@ jobs:
         with:
           java-version: 14
       - name: Release
-        
+        run: ./mvnw -B release:prepare release:perform
+        working-directory: sample-app
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

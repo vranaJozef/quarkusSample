@@ -177,6 +177,10 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 14
+      - name: Configure Git user
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
       - name: Release
         run: ./mvnw -B release:prepare release:perform
         working-directory: sample-app
